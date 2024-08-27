@@ -1,29 +1,14 @@
 import {useEffect, useState} from "react";
-import {apiHeaders, mikeWilliamsId} from "../../constants.ts";
+import {apiHeaders, mikeWilliamsId, post} from "../../constants.ts";
 import {Link} from "react-router-dom";
 import "./Posts.css"
-
-type post = {
-    id: string
-    caption: {
-        text: string
-    },
-    play_count: string,
-    video_url: string,
-    thumbnail_url: string,
-    carousel_media: {
-        carousel_parent_id: string, // De ser necesario
-        is_video: boolean,
-        thumbnail_url: string, // Foto comun a todos
-        video_url: string // Presente unicamente si la publicacion es un video
-    }[]
-}
+import {postData} from "../PostData.ts";
 
 const Posts = () => {
-    const [posts, setPosts] = useState([]);
+    const [posts, setPosts] = useState(null);
     const [paginationToken, setPaginationToken] = useState("");
     useEffect(() => {
-        // fetchData().then(r => {setPosts(r.data.items);}).catch(e => console.error(e));
+        // fetchData().then(r => {setPosts(r.data.items); setPaginationToken(r.data.pagination_token);}).catch(e => console.error(e));
         },[]);
 
     const fetchData = async() => {
@@ -40,19 +25,24 @@ const Posts = () => {
         return data;
     }
 
+    const data: post[] = posts || postData.data.items;
+
     return (
         <>
             <div className="posts-grid">
-                {posts.map((post: post) => (
-                    <div key={post.id}>
-                        <img src={post.thumbnail_url} alt={"Thumbnail"}/>
-                        <p>{post.caption.text}</p>
-                        {post.video_url ? (
-                            <Link to={`/video/${post.id}`}>Watch Video</Link>
-                        ) : post.carousel_media.length > 0 ? (
-                            <Link to={`/carousel/${post.id}`}>View Carousel</Link>
-                        ) : null}
-                    </div>
+                {data.map((post: post) => (
+                    <Link to={`/moreinfo`} onClick={() => localStorage.setItem("post", JSON.stringify(post))}>
+                        <div className="post-thumbnail">
+                            <img src={post.thumbnail_url} alt={"Thumbnail"}/>
+                            {post.caption.hashtags.length > 0 && (
+                                <div className="hashtags">
+                                    {post.caption.hashtags.map((hashtag: string, index: number) => (
+                                        <span key={index}>#{hashtag} </span>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </Link>
                 ))}
             </div>
         </>
