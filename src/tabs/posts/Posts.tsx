@@ -12,7 +12,7 @@ const Posts = () => {
         },[]);
 
     const fetchData = async() => {
-        let url: string = `https://instagram-scraper-api2.p.rapidapi.com/v1.2/posts?username_or_id_or_url=${mikeWilliamsId}&url_embed_safe=true`;
+        let url: string = `https://instagram-scraper-api2.p.rapidapi.com/v1.2/posts?username_or_id_or_url=${mikeWilliamsId}&url_embed_safe=${true}`;
         if (paginationToken) {
             url += `&pagination_token=${paginationToken}`;
         }
