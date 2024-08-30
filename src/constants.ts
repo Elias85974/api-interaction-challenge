@@ -5,7 +5,7 @@ export const apiHeaders = {
     "x-rapidapi-key": apiKey
 }
 
-export const mikeWilliamsId: number = 295424908;
+export const username: number = 295424908;
 
 export type post = {
     id: string

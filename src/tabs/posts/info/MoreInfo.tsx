@@ -3,6 +3,7 @@ import {post} from "../../../constants.ts";
 import "./MoreInfo.css";
 import VideoPost from "./singlepost/VideoPost";
 import PostCarousel from "./singlepost/Carrousel.tsx";
+import GoBackButton from "../../../component/GoBackButton.tsx";
 
 const MoreInfo = () => {
     const [post, setPost] = useState<post | null>(null);
@@ -26,6 +27,7 @@ const MoreInfo = () => {
                     ) : (
                         <PostCarousel post={post} />
                     )}
+                    <GoBackButton />
                 </>
             )}
         </div>

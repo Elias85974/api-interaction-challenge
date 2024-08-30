@@ -1,7 +1,7 @@
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "./Carrousel.css";
-import { useState, useRef, useCallback } from "react";
+import { useRef, useCallback } from "react";
 
 const PostCarousel = ({ post }) => {
     const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);

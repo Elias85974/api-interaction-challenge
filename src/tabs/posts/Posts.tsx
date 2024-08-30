@@ -1,18 +1,19 @@
-import {useEffect, useState} from "react";
-import {apiHeaders, mikeWilliamsId, post} from "../../constants.ts";
+import React, {useEffect, useState} from "react";
+import {apiHeaders, username, post} from "../../constants.ts";
 import {Link} from "react-router-dom";
 import "./Posts.css"
-import {postData} from "../PostData.ts";
+import {mockData} from "./MockData.ts";
 
-const Posts = () => {
+const Posts: React.FC<{username: string}> = ({username: username}) => {
     const [posts, setPosts] = useState(null);
+    const [isLoading, setIsLoading] = useState(true); // Add this line
     const [paginationToken, setPaginationToken] = useState("");
     useEffect(() => {
-        // fetchData().then(r => {setPosts(r.data.items); setPaginationToken(r.data.pagination_token);}).catch(e => console.error(e));
+        fetchData().then(r => {setPosts(r.data.items); setPaginationToken(r.data.pagination_token); setIsLoading(false);}).catch(e => console.error(e));
         },[]);
 
     const fetchData = async() => {
-        let url: string = `https://instagram-scraper-api2.p.rapidapi.com/v1.2/posts?username_or_id_or_url=${mikeWilliamsId}&url_embed_safe=${true}`;
+        let url: string = `https://instagram-scraper-api2.p.rapidapi.com/v1.2/posts?username_or_id_or_url=${username}&url_embed_safe=${true}`;
         if (paginationToken) {
             url += `&pagination_token=${paginationToken}`;
         }
@@ -25,13 +26,17 @@ const Posts = () => {
         return data;
     }
 
-    const data: post[] = posts || postData.data.items;
+    if (isLoading) {
+        return <div>Loading...</div>; // Replace this with your loading component
+    }
+
+    const data: post[] = posts || mockData.data.items;
 
     return (
         <>
             <div className="posts-grid">
                 {data.map((post: post) => (
-                    <Link to={`/moreinfo`} onClick={() => localStorage.setItem("post", JSON.stringify(post))}>
+                    <Link to={`/user/${username}/moreinfo`} onClick={() => localStorage.setItem("post", JSON.stringify(post))}>
                         <div className="post-thumbnail">
                             <img src={post.thumbnail_url} alt={"Thumbnail"}/>
                             {post.caption.hashtags.length > 0 && (

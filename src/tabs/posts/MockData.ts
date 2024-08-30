@@ -1,4 +1,4 @@
-export const postData = {
+export const mockData = {
     "data": {
     "count": 12,
         "items": [
